@@ -100,6 +100,19 @@ def _localize_match_datetime(value: str, local_tz):
     return parsed.astimezone(local_tz)
 
 
+def _normalize_home_away(value: str):
+    if value is None:
+        return None
+    normalized = str(value).strip().upper()
+    if normalized in {"H", "HOME"}:
+        return "Home"
+    if normalized in {"A", "AWAY"}:
+        return "Away"
+    if normalized in {"N", "NEUTRAL"}:
+        return "Neutral"
+    return value
+
+
 def get_payload(event=None):
     now = datetime.now(timezone.utc)
     local_tz, tz_label = _resolve_local_tz(event)
@@ -132,7 +145,7 @@ def get_payload(event=None):
                 ),
                 "next_match_dow": next_local.strftime("%a") if next_local else None,
                 "next_match_dom": str(next_local.day) if next_local else None,
-                "next_match_home_away": team.get("next_match_home_away"),
+                "next_match_home_away": _normalize_home_away(team.get("next_match_home_away")),
             }
         )
 

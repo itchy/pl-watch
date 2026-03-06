@@ -187,8 +187,8 @@ components:
               next_match_home_away:
                 type: string
                 nullable: true
-                enum: [H, A]
-                example: H
+                enum: [Home, Away, Neutral]
+                example: Away
         meta:
           type: object
           required:

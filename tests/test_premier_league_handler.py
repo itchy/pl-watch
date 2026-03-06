@@ -82,6 +82,7 @@ class TestPremierLeagueHandler(unittest.TestCase):
         self.assertEqual(payload["teams"][0]["next_match_ts_local"], "08:00")
         self.assertEqual(payload["teams"][0]["next_match_dow"], "Sat")
         self.assertEqual(payload["teams"][0]["next_match_dom"], "14")
+        self.assertEqual(payload["teams"][0]["next_match_home_away"], "Home")
 
     def test_invalid_tz_returns_400(self):
         tmp, old_env = self._with_local_snapshot()
@@ -121,6 +122,7 @@ class TestPremierLeagueHandler(unittest.TestCase):
         self.assertEqual(len(payload["teams"]), 1)
         self.assertEqual(payload["teams"][0]["short_name"], "TOT")
         self.assertEqual(payload["teams"][0]["ranking"], 16)
+        self.assertEqual(payload["teams"][0]["next_match_home_away"], "Away")
 
     def test_short_name_alias_still_works(self):
         tmp, old_env = self._with_local_snapshot()
