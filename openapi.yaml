@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: PL Watch API
   version: 1.0.0
-  description: Returns Premier League watchface payload data.
+  description: Returns Premier League watchface payload data in structured segments.
 servers:
   - url: https://{lambda_url}
     variables:
@@ -13,24 +13,22 @@ paths:
     get:
       summary: Get Premier League payload
       parameters:
-        - name: offset
+        - name: tz
           in: query
           required: false
-          description: Timezone offset in hours from UTC for dow/dom fields.
+          description: IANA timezone name for dow/dom fields (for example America/Los_Angeles).
           schema:
-            type: integer
-            example: -7
+            type: string
+            example: America/Los_Angeles
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/NextSession'
-                  - $ref: '#/components/schemas/NoUpcomingSession'
+                $ref: '#/components/schemas/PremierLeaguePayload'
         '400':
-          description: Invalid request (for example non-integer offset)
+          description: Invalid request (for example invalid tz)
           content:
             application/json:
               schema:
@@ -43,45 +41,104 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    NextSession:
+    PremierLeaguePayload:
       type: object
       required:
-        - event
-        - session
-        - start
-        - dow
-        - dom
-        - delta
+        - general
+        - endpoint
+        - schedule
+        - note
       properties:
-        event:
+        general:
+          type: object
+          required:
+            - source
+            - request_url
+            - generated_at
+            - timezone
+            - using_last_good
+            - refresh
+          properties:
+            source:
+              type: string
+              example: pl.itchy7.com
+            request_url:
+              type: string
+              example: https://pl.itchy7.com/?tz=America/Los_Angeles
+            generated_at:
+              type: string
+              format: date-time
+              example: '2026-03-06T18:22:00Z'
+            timezone:
+              type: string
+              example: America/Los_Angeles
+            using_last_good:
+              type: boolean
+              example: false
+            fallback_reason:
+              type: string
+              example: upstream data source timeout
+            last_good_age_seconds:
+              type: integer
+              example: 20
+            refresh:
+              type: integer
+              example: 60
+        endpoint:
+          type: object
+          required:
+            - method
+            - path
+            - supported_query_parameters
+          properties:
+            method:
+              type: string
+              example: GET
+            path:
+              type: string
+              example: /
+            supported_query_parameters:
+              type: object
+              additionalProperties:
+                type: string
+              example:
+                tz: IANA timezone name for dow/dom fields (e.g. America/Los_Angeles)
+        schedule:
+          type: object
+          required:
+            - league
+            - event
+            - session
+            - start
+            - dow
+            - dom
+            - delta
+          properties:
+            league:
+              type: string
+              example: Premier League
+            event:
+              type: string
+              example: Template
+            session:
+              type: string
+              example: Data Refresh
+            start:
+              type: string
+              format: date-time
+              example: '2026-03-06T18:22:00Z'
+            dow:
+              type: string
+              example: Fri
+            dom:
+              type: string
+              example: '6'
+            delta:
+              type: string
+              example: 11m
+        note:
           type: string
-          example: Sakhir
-        session:
-          type: string
-          example: Day 3
-        start:
-          type: string
-          format: date-time
-          example: '2026-02-20T07:00:00-00:00'
-        dow:
-          type: string
-          example: Fri
-        dom:
-          type: string
-          example: '20'
-        delta:
-          type: string
-          example: 6h 22m
-      additionalProperties:
-        type: string
-    NoUpcomingSession:
-      type: object
-      required:
-        - error
-      properties:
-        error:
-          type: string
-          example: No upcoming session found
+          example: Template endpoint. Replace with real PL fixtures and standings feed.
     ErrorResponse:
       type: object
       required:
