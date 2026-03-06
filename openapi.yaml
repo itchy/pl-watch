@@ -155,6 +155,14 @@ components:
                 type: string
                 nullable: true
                 example: '2026-03-14T08:00:00-0700'
+              next_match_dow:
+                type: string
+                nullable: true
+                example: Sat
+              next_match_dom:
+                type: string
+                nullable: true
+                example: '14'
               next_match_home_away:
                 type: string
                 nullable: true

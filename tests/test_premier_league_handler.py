@@ -66,6 +66,8 @@ class TestPremierLeagueHandler(unittest.TestCase):
         self.assertEqual(payload["teams"][0]["last_result"], "W")
         self.assertEqual(payload["teams"][0]["next_opponent"], "Tottenham")
         self.assertTrue(payload["teams"][0]["next_match_time_local"].endswith("-0700"))
+        self.assertEqual(payload["teams"][0]["next_match_dow"], "Sat")
+        self.assertEqual(payload["teams"][0]["next_match_dom"], "14")
 
     def test_invalid_tz_returns_400(self):
         tmp, old_env = self._with_local_snapshot()

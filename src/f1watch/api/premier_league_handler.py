@@ -80,6 +80,13 @@ def _localize_match_time(value: str, local_tz):
     return parsed.astimezone(local_tz).strftime("%Y-%m-%dT%H:%M:%S%z")
 
 
+def _localize_match_datetime(value: str, local_tz):
+    parsed = _parse_rfc3339_utc(value)
+    if parsed is None:
+        return None
+    return parsed.astimezone(local_tz)
+
+
 def get_payload(event=None):
     now = datetime.now(timezone.utc)
     local_tz, tz_label = _resolve_local_tz(event)
@@ -95,6 +102,7 @@ def get_payload(event=None):
 
     teams = []
     for team in rows:
+        next_local = _localize_match_datetime(team.get("next_match_time_utc"), local_tz)
         teams.append(
             {
                 "team": team.get("name"),
@@ -107,6 +115,8 @@ def get_payload(event=None):
                 "next_match_time_local": _localize_match_time(
                     team.get("next_match_time_utc"), local_tz
                 ),
+                "next_match_dow": next_local.strftime("%a") if next_local else None,
+                "next_match_dom": str(next_local.day) if next_local else None,
                 "next_match_home_away": team.get("next_match_home_away"),
             }
         )
