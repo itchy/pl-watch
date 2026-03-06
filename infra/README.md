@@ -6,10 +6,13 @@ This directory manages AWS infrastructure for the PL watchface endpoint.
 
 - Primary Lambda function (default: `next-pl-session`)
 - Primary Lambda Function URL + public invoke permission
+- Scheduled scraper Lambda (default: `pl-snapshot-scraper`)
+- EventBridge schedule for hourly snapshot refresh (`rate(1 hour)`)
 - Optional secondary Lambda stack (`enable_premier_league_lambda`)
 - Lambda packaging from:
   - `/Users/scott/code/pl/lambda_function.py`
   - `/Users/scott/code/pl/lambda_pl_function.py`
+  - `/Users/scott/code/pl/lambda_scraper_function.py`
   - `/Users/scott/code/pl/src/`
 
 ## Prerequisites

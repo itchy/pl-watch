@@ -95,3 +95,49 @@ variable "pl_lambda_environment" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_pl_scraper_lambda" {
+  description = "Create scheduled scraper Lambda to refresh PL snapshot in S3."
+  type        = bool
+  default     = true
+}
+
+variable "pl_scraper_function_name" {
+  description = "Scheduled PL scraper Lambda function name."
+  type        = string
+  default     = "pl-snapshot-scraper"
+}
+
+variable "pl_scraper_handler" {
+  description = "Scheduled PL scraper Lambda handler entrypoint."
+  type        = string
+  default     = "lambda_scraper_function.lambda_handler"
+}
+
+variable "pl_scraper_timeout" {
+  description = "Scheduled PL scraper Lambda timeout in seconds."
+  type        = number
+  default     = 30
+}
+
+variable "pl_scraper_memory_size" {
+  description = "Scheduled PL scraper Lambda memory in MB."
+  type        = number
+  default     = 256
+}
+
+variable "pl_scraper_schedule_expression" {
+  description = "EventBridge schedule expression for PL scraper refresh."
+  type        = string
+  default     = "rate(1 hour)"
+}
+
+variable "pl_scraper_environment" {
+  description = "Scheduled PL scraper Lambda environment variables."
+  type        = map(string)
+  default = {
+    DATA_BUCKET      = "f1-data-00000000"
+    F1_YEAR          = "2026"
+    PL_TEAM_DATA_KEY = "2026_pl_team_snapshot.json"
+  }
+}

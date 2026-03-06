@@ -29,3 +29,15 @@ output "pl_lambda_function_arn" {
 output "pl_lambda_function_url" {
   value = try(one(aws_lambda_function_url.premier_league[*].function_url), null)
 }
+
+output "pl_scraper_lambda_function_name" {
+  value = try(one(aws_lambda_function.pl_scraper[*].function_name), null)
+}
+
+output "pl_scraper_lambda_function_arn" {
+  value = try(one(aws_lambda_function.pl_scraper[*].arn), null)
+}
+
+output "pl_scraper_schedule_expression" {
+  value = try(one(aws_cloudwatch_event_rule.pl_scraper_hourly[*].schedule_expression), null)
+}

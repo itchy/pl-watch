@@ -3,8 +3,7 @@ import json
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
-
-import requests
+from urllib.request import Request, urlopen
 
 
 BOOTSTRAP_URL = "https://fantasy.premierleague.com/api/bootstrap-static/"
@@ -53,14 +52,15 @@ def _opponent(team_id: int, fixture: dict, team_name_by_id: dict):
     return None, None
 
 
-def build_snapshot():
-    bootstrap = requests.get(BOOTSTRAP_URL, timeout=20)
-    bootstrap.raise_for_status()
-    fixtures_resp = requests.get(FIXTURES_URL, timeout=20)
-    fixtures_resp.raise_for_status()
+def _fetch_json(url: str):
+    request = Request(url, headers={"User-Agent": "plwatch/1.0"})
+    with urlopen(request, timeout=20) as response:
+        return json.loads(response.read().decode("utf-8"))
 
-    bootstrap_json = bootstrap.json()
-    fixtures = fixtures_resp.json()
+
+def build_snapshot():
+    bootstrap_json = _fetch_json(BOOTSTRAP_URL)
+    fixtures = _fetch_json(FIXTURES_URL)
     teams = bootstrap_json.get("teams") or []
 
     team_name_by_id = {team["id"]: team["name"] for team in teams}

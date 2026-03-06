@@ -50,6 +50,9 @@ cd /Users/scott/code/pl
 ./scripts/update_data.sh
 ```
 
+Production refresh is also automated with an hourly EventBridge schedule that invokes
+the scraper Lambda and writes the snapshot to S3.
+
 Dry-run:
 
 ```bash
