@@ -20,6 +20,13 @@ paths:
           schema:
             type: string
             example: America/Los_Angeles
+        - name: short_name
+          in: query
+          required: false
+          description: Optional team short-name filter to return only one team (for example TOT).
+          schema:
+            type: string
+            example: TOT
       responses:
         '200':
           description: Successful response
@@ -28,7 +35,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PremierLeagueSnapshotResponse'
         '400':
-          description: Invalid request (for example invalid tz)
+          description: Invalid request (for example invalid tz or short_name)
           content:
             application/json:
               schema:
@@ -111,6 +118,7 @@ components:
                 type: string
               example:
                 tz: IANA timezone name for dow/dom fields (e.g. America/Los_Angeles)
+                short_name: Team short name filter (e.g. TOT)
         league:
           type: string
           example: Premier League

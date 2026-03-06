@@ -28,7 +28,17 @@ class TestPremierLeagueHandler(unittest.TestCase):
                     "next_opponent": "Tottenham",
                     "next_match_time_utc": "2026-03-14T15:00:00Z",
                     "next_match_home_away": "H",
-                }
+                },
+                {
+                    "name": "Tottenham",
+                    "short_name": "TOT",
+                    "last_result": "D",
+                    "last_opponent": "Liverpool",
+                    "last_match_time_utc": "2026-03-01T18:00:00Z",
+                    "next_opponent": "Arsenal",
+                    "next_match_time_utc": "2026-03-15T16:30:00Z",
+                    "next_match_home_away": "A",
+                },
             ],
         }
         snapshot_path.write_text(json.dumps(snapshot), encoding="utf-8")
@@ -83,6 +93,42 @@ class TestPremierLeagueHandler(unittest.TestCase):
         self.assertEqual(response["statusCode"], 400)
         body = json.loads(response["body"])
         self.assertIn("error", body)
+
+    def test_short_name_filter_returns_one_team(self):
+        tmp, old_env = self._with_local_snapshot()
+        try:
+            payload = get_payload(
+                {
+                    "queryStringParameters": {
+                        "tz": "America/Los_Angeles",
+                        "short_name": "tot",
+                    }
+                }
+            )
+        finally:
+            tmp.cleanup()
+            for key, value in old_env.items():
+                if value is None:
+                    os.environ.pop(key, None)
+                else:
+                    os.environ[key] = value
+
+        self.assertEqual(payload["meta"]["team_count"], 1)
+        self.assertEqual(len(payload["teams"]), 1)
+        self.assertEqual(payload["teams"][0]["short_name"], "TOT")
+
+    def test_invalid_short_name_returns_400(self):
+        tmp, old_env = self._with_local_snapshot()
+        try:
+            response = lambda_handler({"queryStringParameters": {"short_name": "NOPE"}}, None)
+        finally:
+            tmp.cleanup()
+            for key, value in old_env.items():
+                if value is None:
+                    os.environ.pop(key, None)
+                else:
+                    os.environ[key] = value
+        self.assertEqual(response["statusCode"], 400)
 
 
 if __name__ == "__main__":
