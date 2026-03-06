@@ -37,7 +37,7 @@ variable "lambda_runtime" {
 variable "lambda_timeout" {
   description = "Lambda timeout in seconds."
   type        = number
-  default     = 3
+  default     = 10
 }
 
 variable "lambda_memory_size" {
@@ -57,7 +57,13 @@ variable "lambda_layers" {
 variable "lambda_environment" {
   description = "Lambda environment variables."
   type        = map(string)
-  default     = {}
+  default = {
+    DATA_SOURCE      = "s3"
+    DATA_BUCKET      = "f1-data-00000000"
+    F1_YEAR          = "2026"
+    PL_TEAM_DATA_KEY = "2026_pl_team_snapshot.json"
+    LOCAL_TZ         = "America/Denver"
+  }
 }
 
 variable "cloudfront_distribution_id" {

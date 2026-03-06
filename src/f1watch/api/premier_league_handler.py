@@ -1,5 +1,7 @@
 import json
+import os
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from urllib.parse import urlencode
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -13,6 +15,40 @@ def _minutes_to_next_refresh(now: datetime, interval_minutes: int) -> int:
     current_slot = now.replace(minute=minute_slot, second=0, microsecond=0)
     next_slot = current_slot + timedelta(minutes=interval_minutes)
     return max(0, int((next_slot - now).total_seconds() // 60))
+
+
+def _parse_rfc3339_utc(value: str):
+    if not value:
+        return None
+    try:
+        return datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
+
+def _load_json_from_s3(s3_client, bucket: str, key: str):
+    obj = s3_client.get_object(Bucket=bucket, Key=key)
+    return json.loads(obj["Body"].read()), obj["LastModified"].astimezone(timezone.utc)
+
+
+def _load_json_from_local(key: str):
+    path = Path(key)
+    with path.open("r", encoding="utf-8") as file:
+        payload = json.load(file)
+    modified = datetime.fromtimestamp(path.stat().st_mtime, timezone.utc)
+    return payload, modified
+
+
+def _load_team_snapshot(data_source: str, bucket: str, key: str):
+    use_s3 = data_source == "s3" or (data_source == "auto" and bucket)
+    if use_s3:
+        if not bucket:
+            raise ValueError("DATA_BUCKET is required when DATA_SOURCE=s3")
+        import boto3
+
+        s3_client = boto3.client("s3")
+        return _load_json_from_s3(s3_client, bucket, key)
+    return _load_json_from_local(key)
 
 
 def _request_url(event) -> str:
@@ -37,19 +73,54 @@ def _resolve_local_tz(event):
         raise ValueError(f"invalid tz: {tz_name}") from exc
 
 
+def _localize_match_time(value: str, local_tz):
+    parsed = _parse_rfc3339_utc(value)
+    if parsed is None:
+        return None
+    return parsed.astimezone(local_tz).strftime("%Y-%m-%dT%H:%M:%S%z")
+
+
 def get_payload(event=None):
     now = datetime.now(timezone.utc)
     local_tz, tz_label = _resolve_local_tz(event)
-    local_now = now.astimezone(local_tz)
     request_url = _request_url(event)
+    year = os.environ.get("F1_YEAR", "2026")
+    data_source = os.environ.get("DATA_SOURCE", "auto").lower()
+    bucket = os.environ.get("DATA_BUCKET")
+    snapshot_key = os.environ.get("PL_TEAM_DATA_KEY", f"{year}_pl_team_snapshot.json")
+
+    snapshot, data_last_updated = _load_team_snapshot(data_source, bucket, snapshot_key)
+    rows = snapshot.get("teams") or []
+    league = snapshot.get("league") or "Premier League"
+
+    teams = []
+    for team in rows:
+        teams.append(
+            {
+                "team": team.get("name"),
+                "short_name": team.get("short_name"),
+                "last_result": team.get("last_result"),
+                "last_opponent": team.get("last_opponent"),
+                "last_match_time_utc": team.get("last_match_time_utc"),
+                "next_opponent": team.get("next_opponent"),
+                "next_match_time_utc": team.get("next_match_time_utc"),
+                "next_match_time_local": _localize_match_time(
+                    team.get("next_match_time_utc"), local_tz
+                ),
+                "next_match_home_away": team.get("next_match_home_away"),
+            }
+        )
+
     refresh_seconds = 60
-    delta_minutes = _minutes_to_next_refresh(now, 15)
+    delta_minutes = _minutes_to_next_refresh(now, 5)
     return {
         "general": {
             "source": "pl.itchy7.com",
             "request_url": request_url,
             "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "timezone": tz_label,
+            "data_last_updated_at": data_last_updated.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "data_age_seconds": max(0, int((now - data_last_updated).total_seconds())),
             "using_last_good": False,
             "refresh": refresh_seconds,
         },
@@ -60,16 +131,12 @@ def get_payload(event=None):
                 "tz": "IANA timezone name for dow/dom fields (e.g. America/Los_Angeles)"
             },
         },
-        "schedule": {
-            "league": "Premier League",
-            "event": "Template",
-            "session": "Data Refresh",
-            "start": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "dow": local_now.strftime("%a"),
-            "dom": str(local_now.day),
-            "delta": f"{delta_minutes}m",
+        "league": league,
+        "teams": teams,
+        "meta": {
+            "team_count": len(teams),
+            "next_refresh_in_minutes": delta_minutes,
         },
-        "note": "Template endpoint. Replace with real PL fixtures and standings feed.",
     }
 
 

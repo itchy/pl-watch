@@ -11,7 +11,7 @@ Usage:
   scripts/scrape_and_upload.sh [options]
 
 Options:
-  --year <year>        Year for output files (default: $F1_YEAR or 2026)
+  --year <year>        Year label for output files (default: $F1_YEAR or 2026)
   --bucket <bucket>    S3 bucket name (default: $DATA_BUCKET)
   --prefix <prefix>    Optional S3 key prefix (example: data)
   --profile <profile>  Optional AWS CLI profile
@@ -23,9 +23,7 @@ Environment defaults:
   F1_YEAR, DATA_BUCKET, AWS_PROFILE, AWS_REGION
 
 Expected uploaded files:
-  <year>_drivers.json
-  <year>_teams.json
-  <year>_schedule.json
+  <year>_pl_team_snapshot.json
 USAGE
 }
 
@@ -100,14 +98,10 @@ if ! command -v jq >/dev/null 2>&1; then
 fi
 
 SCRAPER_MODULES=(
-  "f1watch.scrapers.drivers"
-  "f1watch.scrapers.teams"
-  "f1watch.scrapers.schedule"
+  "f1watch.scrapers.premier_league"
 )
 OUTPUT_FILES=(
-  "${YEAR}_drivers.json"
-  "${YEAR}_teams.json"
-  "${YEAR}_schedule.json"
+  "${YEAR}_pl_team_snapshot.json"
 )
 
 if [[ ! -d "src/f1watch" ]]; then

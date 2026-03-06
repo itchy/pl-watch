@@ -1,17 +1,37 @@
 # plwatch
 
-Template repo for a Premier League watchface API endpoint.
+Premier League watchface API endpoint.
 
 ## Current status
 
 - Primary Lambda entrypoint: `/Users/scott/code/pl/lambda_function.py`
 - Primary handler: `/Users/scott/code/pl/src/f1watch/api/premier_league_handler.py`
-- Returns a template JSON payload designed to be replaced with real PL fixtures/standings data.
+- Returns per-team data for:
+  - last result (`W`/`L`/`D`)
+  - last opponent
+  - next opponent
+  - next kickoff time (UTC + localized via `tz`)
 
-## Local run
+## Data pipeline
+
+Data source APIs:
+
+- `https://fantasy.premierleague.com/api/bootstrap-static/`
+- `https://fantasy.premierleague.com/api/fixtures/`
+
+Scraper module:
+
+- `/Users/scott/code/pl/src/f1watch/scrapers/premier_league.py`
+
+Generated file:
+
+- `<year>_pl_team_snapshot.json`
+
+## Local run (handler)
 
 ```bash
-python -c "from src.f1watch.api.premier_league_handler import get_payload; import json; print(json.dumps(get_payload()))"
+DATA_SOURCE=local PL_TEAM_DATA_KEY=/Users/scott/code/pl/2026_pl_team_snapshot.json \
+python3 -c "from src.f1watch.api.premier_league_handler import get_payload; import json; print(json.dumps(get_payload(), indent=2))"
 ```
 
 ## API usage
@@ -20,6 +40,20 @@ Example:
 
 ```bash
 curl "https://pl.itchy7.com/"
+curl "https://pl.itchy7.com/?tz=America/Los_Angeles"
+```
+
+## Scrape + upload
+
+```bash
+cd /Users/scott/code/pl
+./scripts/update_data.sh
+```
+
+Dry-run:
+
+```bash
+./scripts/scrape_and_upload.sh --year 2026 --bucket f1-data-00000000 --dry-run
 ```
 
 ## Terraform (IaC)

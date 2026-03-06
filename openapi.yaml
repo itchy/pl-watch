@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: PL Watch API
   version: 1.0.0
-  description: Returns Premier League watchface payload data in structured segments.
+  description: Returns per-team Premier League last-result and next-fixture data.
 servers:
   - url: https://{lambda_url}
     variables:
@@ -11,7 +11,7 @@ servers:
 paths:
   /:
     get:
-      summary: Get Premier League payload
+      summary: Get per-team Premier League snapshot
       parameters:
         - name: tz
           in: query
@@ -26,7 +26,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PremierLeaguePayload'
+                $ref: '#/components/schemas/PremierLeagueSnapshotResponse'
         '400':
           description: Invalid request (for example invalid tz)
           content:
@@ -41,13 +41,14 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    PremierLeaguePayload:
+    PremierLeagueSnapshotResponse:
       type: object
       required:
         - general
         - endpoint
-        - schedule
-        - note
+        - league
+        - teams
+        - meta
       properties:
         general:
           type: object
@@ -75,6 +76,13 @@ components:
             using_last_good:
               type: boolean
               example: false
+            data_last_updated_at:
+              type: string
+              format: date-time
+              example: '2026-03-06T15:30:00Z'
+            data_age_seconds:
+              type: integer
+              example: 42
             fallback_reason:
               type: string
               example: upstream data source timeout
@@ -103,42 +111,67 @@ components:
                 type: string
               example:
                 tz: IANA timezone name for dow/dom fields (e.g. America/Los_Angeles)
-        schedule:
+        league:
+          type: string
+          example: Premier League
+        teams:
+          type: array
+          items:
+            type: object
+            required:
+              - team
+              - short_name
+            properties:
+              team:
+                type: string
+                example: Arsenal
+              short_name:
+                type: string
+                example: ARS
+              last_result:
+                type: string
+                nullable: true
+                enum: [W, L, D]
+                example: W
+              last_opponent:
+                type: string
+                nullable: true
+                example: Chelsea
+              last_match_time_utc:
+                type: string
+                format: date-time
+                nullable: true
+                example: '2026-03-01T16:30:00Z'
+              next_opponent:
+                type: string
+                nullable: true
+                example: Tottenham
+              next_match_time_utc:
+                type: string
+                format: date-time
+                nullable: true
+                example: '2026-03-14T15:00:00Z'
+              next_match_time_local:
+                type: string
+                nullable: true
+                example: '2026-03-14T08:00:00-0700'
+              next_match_home_away:
+                type: string
+                nullable: true
+                enum: [H, A]
+                example: H
+        meta:
           type: object
           required:
-            - league
-            - event
-            - session
-            - start
-            - dow
-            - dom
-            - delta
+            - team_count
+            - next_refresh_in_minutes
           properties:
-            league:
-              type: string
-              example: Premier League
-            event:
-              type: string
-              example: Template
-            session:
-              type: string
-              example: Data Refresh
-            start:
-              type: string
-              format: date-time
-              example: '2026-03-06T18:22:00Z'
-            dow:
-              type: string
-              example: Fri
-            dom:
-              type: string
-              example: '6'
-            delta:
-              type: string
-              example: 11m
-        note:
-          type: string
-          example: Template endpoint. Replace with real PL fixtures and standings feed.
+            team_count:
+              type: integer
+              example: 20
+            next_refresh_in_minutes:
+              type: integer
+              example: 3
     ErrorResponse:
       type: object
       required:
