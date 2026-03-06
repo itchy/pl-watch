@@ -20,6 +20,7 @@ class TestPremierLeagueHandler(unittest.TestCase):
             "league": "Premier League",
             "teams": [
                 {
+                    "ranking": 1,
                     "name": "Arsenal",
                     "short_name": "ARS",
                     "last_result": "W",
@@ -30,6 +31,7 @@ class TestPremierLeagueHandler(unittest.TestCase):
                     "next_match_home_away": "H",
                 },
                 {
+                    "ranking": 16,
                     "name": "Tottenham",
                     "short_name": "TOT",
                     "last_result": "D",
@@ -73,6 +75,7 @@ class TestPremierLeagueHandler(unittest.TestCase):
         self.assertEqual(payload["endpoint"]["path"], "/")
         self.assertIn("tz", payload["endpoint"]["supported_query_parameters"])
         self.assertEqual(payload["teams"][0]["team"], "Arsenal")
+        self.assertEqual(payload["teams"][0]["ranking"], 1)
         self.assertEqual(payload["teams"][0]["last_result"], "W")
         self.assertEqual(payload["teams"][0]["next_opponent"], "Tottenham")
         self.assertTrue(payload["teams"][0]["next_match_time_local"].endswith("-0700"))
@@ -116,6 +119,7 @@ class TestPremierLeagueHandler(unittest.TestCase):
         self.assertEqual(payload["meta"]["team_count"], 1)
         self.assertEqual(len(payload["teams"]), 1)
         self.assertEqual(payload["teams"][0]["short_name"], "TOT")
+        self.assertEqual(payload["teams"][0]["ranking"], 16)
 
     def test_short_name_alias_still_works(self):
         tmp, old_env = self._with_local_snapshot()

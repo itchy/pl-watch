@@ -119,6 +119,7 @@ def get_payload(event=None):
         next_local = _localize_match_datetime(team.get("next_match_time_utc"), local_tz)
         teams.append(
             {
+                "ranking": team.get("ranking"),
                 "team": team.get("name"),
                 "short_name": team.get("short_name"),
                 "last_result": team.get("last_result"),

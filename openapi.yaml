@@ -135,9 +135,14 @@ components:
           items:
             type: object
             required:
+              - ranking
               - team
               - short_name
             properties:
+              ranking:
+                type: integer
+                nullable: true
+                example: 16
               team:
                 type: string
                 example: Arsenal
