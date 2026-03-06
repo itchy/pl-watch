@@ -90,7 +90,7 @@ def _localize_match_time(value: str, local_tz):
     parsed = _parse_rfc3339_utc(value)
     if parsed is None:
         return None
-    return parsed.astimezone(local_tz).strftime("%Y-%m-%dT%H:%M:%S%z")
+    return parsed.astimezone(local_tz).strftime("%H:%M")
 
 
 def _localize_match_datetime(value: str, local_tz):
@@ -126,8 +126,8 @@ def get_payload(event=None):
                 "last_opponent": team.get("last_opponent"),
                 "last_match_time_utc": team.get("last_match_time_utc"),
                 "next_opponent": team.get("next_opponent"),
-                "next_match_time_utc": team.get("next_match_time_utc"),
-                "next_match_time_local": _localize_match_time(
+                "next_match_ts_utc": team.get("next_match_time_utc"),
+                "next_match_ts_local": _localize_match_time(
                     team.get("next_match_time_utc"), local_tz
                 ),
                 "next_match_dow": next_local.strftime("%a") if next_local else None,

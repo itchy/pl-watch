@@ -167,15 +167,15 @@ components:
                 type: string
                 nullable: true
                 example: Tottenham
-              next_match_time_utc:
+              next_match_ts_utc:
                 type: string
                 format: date-time
                 nullable: true
                 example: '2026-03-14T15:00:00Z'
-              next_match_time_local:
+              next_match_ts_local:
                 type: string
                 nullable: true
-                example: '2026-03-14T08:00:00-0700'
+                example: '08:00'
               next_match_dow:
                 type: string
                 nullable: true

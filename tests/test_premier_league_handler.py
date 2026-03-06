@@ -78,7 +78,8 @@ class TestPremierLeagueHandler(unittest.TestCase):
         self.assertEqual(payload["teams"][0]["ranking"], 1)
         self.assertEqual(payload["teams"][0]["last_result"], "W")
         self.assertEqual(payload["teams"][0]["next_opponent"], "Tottenham")
-        self.assertTrue(payload["teams"][0]["next_match_time_local"].endswith("-0700"))
+        self.assertEqual(payload["teams"][0]["next_match_ts_utc"], "2026-03-14T15:00:00Z")
+        self.assertEqual(payload["teams"][0]["next_match_ts_local"], "08:00")
         self.assertEqual(payload["teams"][0]["next_match_dow"], "Sat")
         self.assertEqual(payload["teams"][0]["next_match_dom"], "14")
 
