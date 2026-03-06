@@ -9,7 +9,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
-from f1watch.api.premier_league_handler import get_payload, lambda_handler  # noqa: E402
+from plwatch.api.premier_league_handler import get_payload, lambda_handler  # noqa: E402
 
 
 class TestPremierLeagueHandler(unittest.TestCase):

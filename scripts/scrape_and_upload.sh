@@ -98,14 +98,14 @@ if ! command -v jq >/dev/null 2>&1; then
 fi
 
 SCRAPER_MODULES=(
-  "f1watch.scrapers.premier_league"
+  "plwatch.scrapers.premier_league"
 )
 OUTPUT_FILES=(
   "${YEAR}_pl_team_snapshot.json"
 )
 
-if [[ ! -d "src/f1watch" ]]; then
-  echo "Expected package path missing: src/f1watch" >&2
+if [[ ! -d "src/plwatch" ]]; then
+  echo "Expected package path missing: src/plwatch" >&2
   exit 1
 fi
 

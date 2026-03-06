@@ -5,7 +5,7 @@ Premier League watchface API endpoint.
 ## Current status
 
 - Primary Lambda entrypoint: `/Users/scott/code/pl/lambda_function.py`
-- Primary handler: `/Users/scott/code/pl/src/f1watch/api/premier_league_handler.py`
+- Primary handler: `/Users/scott/code/pl/src/plwatch/api/premier_league_handler.py`
 - Returns per-team data for:
   - last result (`W`/`L`/`D`)
   - last opponent
@@ -21,7 +21,7 @@ Data source APIs:
 
 Scraper module:
 
-- `/Users/scott/code/pl/src/f1watch/scrapers/premier_league.py`
+- `/Users/scott/code/pl/src/plwatch/scrapers/premier_league.py`
 
 Generated file:
 
@@ -31,7 +31,7 @@ Generated file:
 
 ```bash
 DATA_SOURCE=local PL_TEAM_DATA_KEY=/Users/scott/code/pl/2026_pl_team_snapshot.json \
-python3 -c "from src.f1watch.api.premier_league_handler import get_payload; import json; print(json.dumps(get_payload(), indent=2))"
+python3 -c "from src.plwatch.api.premier_league_handler import get_payload; import json; print(json.dumps(get_payload(), indent=2))"
 ```
 
 ## API usage
@@ -74,5 +74,4 @@ terraform apply
 
 ## Notes
 
-- This repo was cloned from the F1 project as a starting template.
-- Package/module paths still use `f1watch` for now; you can rename later if you want a clean PL namespace.
+- Python package namespace is `plwatch`.
