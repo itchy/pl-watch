@@ -120,7 +120,7 @@ def build_snapshot():
 
         rows.append(
             {
-                "team_id": team_id,
+                "ranking": team.get("position"),
                 "name": team["name"],
                 "short_name": team.get("short_name"),
                 "last_result": last_result,

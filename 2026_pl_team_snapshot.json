@@ -1,13 +1,13 @@
 {
   "league": "Premier League",
-  "generated_at": "2026-03-06T16:04:45Z",
+  "generated_at": "2026-03-06T18:31:03Z",
   "source_endpoints": [
     "https://fantasy.premierleague.com/api/bootstrap-static/",
     "https://fantasy.premierleague.com/api/fixtures/"
   ],
   "teams": [
     {
-      "team_id": 1,
+      "ranking": 1,
       "name": "Arsenal",
       "short_name": "ARS",
       "last_result": "W",
@@ -18,7 +18,7 @@
       "next_match_home_away": "H"
     },
     {
-      "team_id": 2,
+      "ranking": 4,
       "name": "Aston Villa",
       "short_name": "AVL",
       "last_result": "L",
@@ -29,7 +29,7 @@
       "next_match_home_away": "A"
     },
     {
-      "team_id": 4,
+      "ranking": 9,
       "name": "Bournemouth",
       "short_name": "BOU",
       "last_result": "D",
@@ -40,7 +40,7 @@
       "next_match_home_away": "A"
     },
     {
-      "team_id": 5,
+      "ranking": 7,
       "name": "Brentford",
       "short_name": "BRE",
       "last_result": "D",
@@ -51,7 +51,7 @@
       "next_match_home_away": "H"
     },
     {
-      "team_id": 6,
+      "ranking": 14,
       "name": "Brighton",
       "short_name": "BHA",
       "last_result": "L",
@@ -62,7 +62,7 @@
       "next_match_home_away": "A"
     },
     {
-      "team_id": 3,
+      "ranking": 19,
       "name": "Burnley",
       "short_name": "BUR",
       "last_result": "L",
@@ -73,7 +73,7 @@
       "next_match_home_away": "H"
     },
     {
-      "team_id": 7,
+      "ranking": 5,
       "name": "Chelsea",
       "short_name": "CHE",
       "last_result": "W",
@@ -84,7 +84,7 @@
       "next_match_home_away": "H"
     },
     {
-      "team_id": 8,
+      "ranking": 13,
       "name": "Crystal Palace",
       "short_name": "CRY",
       "last_result": "W",
@@ -95,7 +95,7 @@
       "next_match_home_away": "H"
     },
     {
-      "team_id": 9,
+      "ranking": 8,
       "name": "Everton",
       "short_name": "EVE",
       "last_result": "W",
@@ -106,7 +106,7 @@
       "next_match_home_away": "A"
     },
     {
-      "team_id": 10,
+      "ranking": 10,
       "name": "Fulham",
       "short_name": "FUL",
       "last_result": "L",
@@ -117,7 +117,7 @@
       "next_match_home_away": "A"
     },
     {
-      "team_id": 11,
+      "ranking": 15,
       "name": "Leeds",
       "short_name": "LEE",
       "last_result": "L",
@@ -128,7 +128,7 @@
       "next_match_home_away": "A"
     },
     {
-      "team_id": 12,
+      "ranking": 6,
       "name": "Liverpool",
       "short_name": "LIV",
       "last_result": "L",
@@ -139,7 +139,7 @@
       "next_match_home_away": "H"
     },
     {
-      "team_id": 13,
+      "ranking": 2,
       "name": "Man City",
       "short_name": "MCI",
       "last_result": "D",
@@ -150,7 +150,7 @@
       "next_match_home_away": "A"
     },
     {
-      "team_id": 14,
+      "ranking": 3,
       "name": "Man Utd",
       "short_name": "MUN",
       "last_result": "L",
@@ -161,7 +161,7 @@
       "next_match_home_away": "H"
     },
     {
-      "team_id": 15,
+      "ranking": 12,
       "name": "Newcastle",
       "short_name": "NEW",
       "last_result": "W",
@@ -172,7 +172,7 @@
       "next_match_home_away": "A"
     },
     {
-      "team_id": 16,
+      "ranking": 17,
       "name": "Nott'm Forest",
       "short_name": "NFO",
       "last_result": "D",
@@ -183,7 +183,7 @@
       "next_match_home_away": "H"
     },
     {
-      "team_id": 18,
+      "ranking": 16,
       "name": "Spurs",
       "short_name": "TOT",
       "last_result": "L",
@@ -194,7 +194,7 @@
       "next_match_home_away": "A"
     },
     {
-      "team_id": 17,
+      "ranking": 11,
       "name": "Sunderland",
       "short_name": "SUN",
       "last_result": "W",
@@ -205,7 +205,7 @@
       "next_match_home_away": "H"
     },
     {
-      "team_id": 19,
+      "ranking": 18,
       "name": "West Ham",
       "short_name": "WHU",
       "last_result": "W",
@@ -216,7 +216,7 @@
       "next_match_home_away": "H"
     },
     {
-      "team_id": 20,
+      "ranking": 20,
       "name": "Wolves",
       "short_name": "WOL",
       "last_result": "W",
