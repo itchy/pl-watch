@@ -94,14 +94,14 @@ class TestPremierLeagueHandler(unittest.TestCase):
         body = json.loads(response["body"])
         self.assertIn("error", body)
 
-    def test_short_name_filter_returns_one_team(self):
+    def test_team_filter_returns_one_team(self):
         tmp, old_env = self._with_local_snapshot()
         try:
             payload = get_payload(
                 {
                     "queryStringParameters": {
                         "tz": "America/Los_Angeles",
-                        "short_name": "tot",
+                        "team": "tot",
                     }
                 }
             )
@@ -117,10 +117,25 @@ class TestPremierLeagueHandler(unittest.TestCase):
         self.assertEqual(len(payload["teams"]), 1)
         self.assertEqual(payload["teams"][0]["short_name"], "TOT")
 
-    def test_invalid_short_name_returns_400(self):
+    def test_short_name_alias_still_works(self):
         tmp, old_env = self._with_local_snapshot()
         try:
-            response = lambda_handler({"queryStringParameters": {"short_name": "NOPE"}}, None)
+            payload = get_payload({"queryStringParameters": {"short_name": "tot"}})
+        finally:
+            tmp.cleanup()
+            for key, value in old_env.items():
+                if value is None:
+                    os.environ.pop(key, None)
+                else:
+                    os.environ[key] = value
+
+        self.assertEqual(payload["meta"]["team_count"], 1)
+        self.assertEqual(payload["teams"][0]["short_name"], "TOT")
+
+    def test_invalid_team_returns_400(self):
+        tmp, old_env = self._with_local_snapshot()
+        try:
+            response = lambda_handler({"queryStringParameters": {"team": "NOPE"}}, None)
         finally:
             tmp.cleanup()
             for key, value in old_env.items():

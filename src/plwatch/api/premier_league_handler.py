@@ -73,14 +73,16 @@ def _resolve_local_tz(event):
         raise ValueError(f"invalid tz: {tz_name}") from exc
 
 
-def _resolve_short_name_filter(event):
+def _resolve_team_filter(event):
     params = (event or {}).get("queryStringParameters") or {}
-    value = params.get("short_name")
+    value = params.get("team")
+    if value is None:
+        value = params.get("short_name")
     if value is None:
         return None
     normalized = value.strip().upper()
     if not normalized:
-        raise ValueError("invalid short_name: empty")
+        raise ValueError("invalid team: empty")
     return normalized
 
 
@@ -101,7 +103,7 @@ def _localize_match_datetime(value: str, local_tz):
 def get_payload(event=None):
     now = datetime.now(timezone.utc)
     local_tz, tz_label = _resolve_local_tz(event)
-    short_name_filter = _resolve_short_name_filter(event)
+    team_filter = _resolve_team_filter(event)
     request_url = _request_url(event)
     year = os.environ.get("F1_YEAR", "2026")
     data_source = os.environ.get("DATA_SOURCE", "auto").lower()
@@ -133,10 +135,10 @@ def get_payload(event=None):
             }
         )
 
-    if short_name_filter is not None:
-        teams = [team for team in teams if (team.get("short_name") or "").upper() == short_name_filter]
+    if team_filter is not None:
+        teams = [team for team in teams if (team.get("short_name") or "").upper() == team_filter]
         if not teams:
-            raise ValueError(f"invalid short_name: {short_name_filter}")
+            raise ValueError(f"invalid team: {team_filter}")
 
     refresh_seconds = 60
     delta_minutes = _minutes_to_next_refresh(now, 5)
@@ -156,7 +158,8 @@ def get_payload(event=None):
             "path": "/",
             "supported_query_parameters": {
                 "tz": "IANA timezone name for dow/dom fields (e.g. America/Los_Angeles)",
-                "short_name": "Team short name filter (e.g. TOT)",
+                "team": "Team short name filter (e.g. TOT)",
+                "short_name": "Alias for team (deprecated)",
             },
         },
         "league": league,
