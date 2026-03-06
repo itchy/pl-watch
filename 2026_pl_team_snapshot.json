@@ -1,0 +1,230 @@
+{
+  "league": "Premier League",
+  "generated_at": "2026-03-06T16:04:45Z",
+  "source_endpoints": [
+    "https://fantasy.premierleague.com/api/bootstrap-static/",
+    "https://fantasy.premierleague.com/api/fixtures/"
+  ],
+  "teams": [
+    {
+      "team_id": 1,
+      "name": "Arsenal",
+      "short_name": "ARS",
+      "last_result": "W",
+      "last_opponent": "Brighton",
+      "last_match_time_utc": "2026-03-04T19:30:00Z",
+      "next_opponent": "Everton",
+      "next_match_time_utc": "2026-03-14T17:30:00Z",
+      "next_match_home_away": "H"
+    },
+    {
+      "team_id": 2,
+      "name": "Aston Villa",
+      "short_name": "AVL",
+      "last_result": "L",
+      "last_opponent": "Chelsea",
+      "last_match_time_utc": "2026-03-04T19:30:00Z",
+      "next_opponent": "Man Utd",
+      "next_match_time_utc": "2026-03-15T14:00:00Z",
+      "next_match_home_away": "A"
+    },
+    {
+      "team_id": 4,
+      "name": "Bournemouth",
+      "short_name": "BOU",
+      "last_result": "D",
+      "last_opponent": "Brentford",
+      "last_match_time_utc": "2026-03-03T19:30:00Z",
+      "next_opponent": "Burnley",
+      "next_match_time_utc": "2026-03-14T15:00:00Z",
+      "next_match_home_away": "A"
+    },
+    {
+      "team_id": 5,
+      "name": "Brentford",
+      "short_name": "BRE",
+      "last_result": "D",
+      "last_opponent": "Bournemouth",
+      "last_match_time_utc": "2026-03-03T19:30:00Z",
+      "next_opponent": "Wolves",
+      "next_match_time_utc": "2026-03-16T20:00:00Z",
+      "next_match_home_away": "H"
+    },
+    {
+      "team_id": 6,
+      "name": "Brighton",
+      "short_name": "BHA",
+      "last_result": "L",
+      "last_opponent": "Arsenal",
+      "last_match_time_utc": "2026-03-04T19:30:00Z",
+      "next_opponent": "Sunderland",
+      "next_match_time_utc": "2026-03-14T15:00:00Z",
+      "next_match_home_away": "A"
+    },
+    {
+      "team_id": 3,
+      "name": "Burnley",
+      "short_name": "BUR",
+      "last_result": "L",
+      "last_opponent": "Everton",
+      "last_match_time_utc": "2026-03-03T19:30:00Z",
+      "next_opponent": "Bournemouth",
+      "next_match_time_utc": "2026-03-14T15:00:00Z",
+      "next_match_home_away": "H"
+    },
+    {
+      "team_id": 7,
+      "name": "Chelsea",
+      "short_name": "CHE",
+      "last_result": "W",
+      "last_opponent": "Aston Villa",
+      "last_match_time_utc": "2026-03-04T19:30:00Z",
+      "next_opponent": "Newcastle",
+      "next_match_time_utc": "2026-03-14T17:30:00Z",
+      "next_match_home_away": "H"
+    },
+    {
+      "team_id": 8,
+      "name": "Crystal Palace",
+      "short_name": "CRY",
+      "last_result": "W",
+      "last_opponent": "Spurs",
+      "last_match_time_utc": "2026-03-05T20:00:00Z",
+      "next_opponent": "Leeds",
+      "next_match_time_utc": "2026-03-15T14:00:00Z",
+      "next_match_home_away": "H"
+    },
+    {
+      "team_id": 9,
+      "name": "Everton",
+      "short_name": "EVE",
+      "last_result": "W",
+      "last_opponent": "Burnley",
+      "last_match_time_utc": "2026-03-03T19:30:00Z",
+      "next_opponent": "Arsenal",
+      "next_match_time_utc": "2026-03-14T17:30:00Z",
+      "next_match_home_away": "A"
+    },
+    {
+      "team_id": 10,
+      "name": "Fulham",
+      "short_name": "FUL",
+      "last_result": "L",
+      "last_opponent": "West Ham",
+      "last_match_time_utc": "2026-03-04T19:30:00Z",
+      "next_opponent": "Nott'm Forest",
+      "next_match_time_utc": "2026-03-15T14:00:00Z",
+      "next_match_home_away": "A"
+    },
+    {
+      "team_id": 11,
+      "name": "Leeds",
+      "short_name": "LEE",
+      "last_result": "L",
+      "last_opponent": "Sunderland",
+      "last_match_time_utc": "2026-03-03T19:30:00Z",
+      "next_opponent": "Crystal Palace",
+      "next_match_time_utc": "2026-03-15T14:00:00Z",
+      "next_match_home_away": "A"
+    },
+    {
+      "team_id": 12,
+      "name": "Liverpool",
+      "short_name": "LIV",
+      "last_result": "L",
+      "last_opponent": "Wolves",
+      "last_match_time_utc": "2026-03-03T20:15:00Z",
+      "next_opponent": "Spurs",
+      "next_match_time_utc": "2026-03-15T16:30:00Z",
+      "next_match_home_away": "H"
+    },
+    {
+      "team_id": 13,
+      "name": "Man City",
+      "short_name": "MCI",
+      "last_result": "D",
+      "last_opponent": "Nott'm Forest",
+      "last_match_time_utc": "2026-03-04T19:30:00Z",
+      "next_opponent": "West Ham",
+      "next_match_time_utc": "2026-03-14T20:00:00Z",
+      "next_match_home_away": "A"
+    },
+    {
+      "team_id": 14,
+      "name": "Man Utd",
+      "short_name": "MUN",
+      "last_result": "L",
+      "last_opponent": "Newcastle",
+      "last_match_time_utc": "2026-03-04T20:15:00Z",
+      "next_opponent": "Aston Villa",
+      "next_match_time_utc": "2026-03-15T14:00:00Z",
+      "next_match_home_away": "H"
+    },
+    {
+      "team_id": 15,
+      "name": "Newcastle",
+      "short_name": "NEW",
+      "last_result": "W",
+      "last_opponent": "Man Utd",
+      "last_match_time_utc": "2026-03-04T20:15:00Z",
+      "next_opponent": "Chelsea",
+      "next_match_time_utc": "2026-03-14T17:30:00Z",
+      "next_match_home_away": "A"
+    },
+    {
+      "team_id": 16,
+      "name": "Nott'm Forest",
+      "short_name": "NFO",
+      "last_result": "D",
+      "last_opponent": "Man City",
+      "last_match_time_utc": "2026-03-04T19:30:00Z",
+      "next_opponent": "Fulham",
+      "next_match_time_utc": "2026-03-15T14:00:00Z",
+      "next_match_home_away": "H"
+    },
+    {
+      "team_id": 18,
+      "name": "Spurs",
+      "short_name": "TOT",
+      "last_result": "L",
+      "last_opponent": "Crystal Palace",
+      "last_match_time_utc": "2026-03-05T20:00:00Z",
+      "next_opponent": "Liverpool",
+      "next_match_time_utc": "2026-03-15T16:30:00Z",
+      "next_match_home_away": "A"
+    },
+    {
+      "team_id": 17,
+      "name": "Sunderland",
+      "short_name": "SUN",
+      "last_result": "W",
+      "last_opponent": "Leeds",
+      "last_match_time_utc": "2026-03-03T19:30:00Z",
+      "next_opponent": "Brighton",
+      "next_match_time_utc": "2026-03-14T15:00:00Z",
+      "next_match_home_away": "H"
+    },
+    {
+      "team_id": 19,
+      "name": "West Ham",
+      "short_name": "WHU",
+      "last_result": "W",
+      "last_opponent": "Fulham",
+      "last_match_time_utc": "2026-03-04T19:30:00Z",
+      "next_opponent": "Man City",
+      "next_match_time_utc": "2026-03-14T20:00:00Z",
+      "next_match_home_away": "H"
+    },
+    {
+      "team_id": 20,
+      "name": "Wolves",
+      "short_name": "WOL",
+      "last_result": "W",
+      "last_opponent": "Liverpool",
+      "last_match_time_utc": "2026-03-03T20:15:00Z",
+      "next_opponent": "Brentford",
+      "next_match_time_utc": "2026-03-16T20:00:00Z",
+      "next_match_home_away": "A"
+    }
+  ]
+}
