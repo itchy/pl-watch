@@ -25,7 +25,7 @@ variable "lambda_role_arn" {
 variable "lambda_handler" {
   description = "Lambda handler entrypoint."
   type        = string
-  default     = "lambda_pl_function.lambda_handler"
+  default     = "lambda_function.lambda_handler"
 }
 
 variable "lambda_runtime" {
