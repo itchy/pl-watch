@@ -141,3 +141,27 @@ variable "pl_scraper_environment" {
     PL_TEAM_DATA_KEY = "2026_pl_team_snapshot.json"
   }
 }
+
+variable "pl_api_gateway_id" {
+  description = "Existing API Gateway HTTP API ID used by pl.itchy7.com."
+  type        = string
+  default     = "he8mfyvbn6"
+}
+
+variable "pl_api_gateway_domain_name" {
+  description = "API Gateway domain name used as CloudFront origin for pl.itchy7.com."
+  type        = string
+  default     = "he8mfyvbn6.execute-api.us-east-1.amazonaws.com"
+}
+
+variable "pl_cloudfront_distribution_id" {
+  description = "CloudFront distribution ID for pl.itchy7.com."
+  type        = string
+  default     = "E19TSLEXYXI6FI"
+}
+
+variable "enable_pl_cloudfront_origin_sync" {
+  description = "Enforce CloudFront origin target for pl.itchy7.com during terraform apply."
+  type        = bool
+  default     = true
+}

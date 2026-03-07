@@ -84,6 +84,14 @@ resource "aws_lambda_permission" "function_url_public" {
   function_url_auth_type = "NONE"
 }
 
+resource "aws_lambda_permission" "pl_api_gateway_invoke" {
+  statement_id  = "ApiGatewayInvokePlNextSessionManaged"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.next_f1_session.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "arn:aws:execute-api:${var.aws_region}:373892137535:${var.pl_api_gateway_id}/*/*/*"
+}
+
 resource "aws_lambda_function" "premier_league" {
   count = var.enable_premier_league_lambda ? 1 : 0
 
@@ -191,4 +199,36 @@ resource "aws_lambda_permission" "allow_eventbridge_pl_scraper" {
   function_name = aws_lambda_function.pl_scraper[0].function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.pl_scraper_hourly[0].arn
+}
+
+resource "terraform_data" "sync_pl_cloudfront_origin" {
+  count = var.enable_pl_cloudfront_origin_sync ? 1 : 0
+
+  triggers_replace = [
+    var.pl_cloudfront_distribution_id,
+    var.pl_api_gateway_domain_name,
+    var.pl_api_gateway_id,
+    var.aws_profile,
+  ]
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      set -euo pipefail
+      TMP_IN="$(mktemp /tmp/pl-cf-XXXXXX.json)"
+      TMP_OUT="$(mktemp /tmp/pl-cf-dist-XXXXXX.json)"
+      AWS_PROFILE="${var.aws_profile}" aws cloudfront get-distribution-config --id "${var.pl_cloudfront_distribution_id}" --output json > "$TMP_IN"
+      ETAG="$(jq -r '.ETag' "$TMP_IN")"
+      jq '.DistributionConfig
+        | .Origins.Items[0].DomainName = "${var.pl_api_gateway_domain_name}"
+        | .Origins.Items[0].Id = "${var.pl_api_gateway_domain_name}"
+        | .DefaultCacheBehavior.TargetOriginId = "${var.pl_api_gateway_domain_name}"
+        | del(.DefaultCacheBehavior.OriginRequestPolicyId)' "$TMP_IN" > "$TMP_OUT"
+      AWS_PROFILE="${var.aws_profile}" aws cloudfront update-distribution --id "${var.pl_cloudfront_distribution_id}" --if-match "$ETAG" --distribution-config "file://$TMP_OUT" >/dev/null
+      rm -f "$TMP_IN" "$TMP_OUT"
+    EOT
+  }
+
+  depends_on = [
+    aws_lambda_permission.pl_api_gateway_invoke,
+  ]
 }
